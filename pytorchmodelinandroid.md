@@ -17,16 +17,17 @@ pytorch model --> onnx --> tensorflow 로 바꿀 것이다.
  이제 본격적으로 본 튜터리얼을 위해 필요한 library들을 설치해보자. 
  
 ### 1) Install ONNX and ONNX Runtime
-'''
+
+```
 pip install onnx
 pip install onnxruntime
-'''
+```
 
 ### 2) import onnx
 
-'''
+```
 import torch.onnx
-'''
+```
 
 로 진행하면 된다. 
 
@@ -47,19 +48,19 @@ tracing, scripting 두 가지 방법이 존재하는데 우선 tracing 부터 �
 __torch.onnx.export()__ 이 함수 하나만 이용하면 변환이 쉽게 가능하다. 
 
 이 함수는 
-'''torch.onnx.export(model, args, f, export_params=True, verbose=False, training=<TrainingMode.EVAL: 0>, input_names=None, output_names=None, aten=False, operator_export_type=None, opset_version=None, _retain_param_name=True, do_constant_folding=True, example_outputs=None, strip_doc_string=True, dynamic_axes=None, keep_initializers_as_inputs=None, custom_opsets=None, enable_onnx_checker=True, use_external_data_format=False)''' 
+```torch.onnx.export(model, args, f, export_params=True, verbose=False, training=<TrainingMode.EVAL: 0>, input_names=None, output_names=None, aten=False, operator_export_type=None, opset_version=None, _retain_param_name=True, do_constant_folding=True, example_outputs=None, strip_doc_string=True, dynamic_axes=None, keep_initializers_as_inputs=None, custom_opsets=None, enable_onnx_checker=True, use_external_data_format=False)```
 
 이런 파라미터들을 다양하게 가지는데, 조금 더 자세한 설명은 [torch.onnx.export](https://pytorch.org/docs/master/onnx.html) 를 참고해도 좋다. 
 
 그럼 실제로 어떻게 사용하면 되는지 하나씩 살펴보겠다. 
 
 우선 모델에 대한 입력값을 정해준다. 자료형과 shape만 맞으면 돼고, 안에 들어가는 값은 랜덤하게 들어가도 괜찮다. 우리는 x를 input으로 정의해주자.
-''' 
+``` 
 x = torch.randn(batch_size, 1, 224,224, requires_grad=True)
-'''
+```
 
 이제 진짜 모델을 변환하도록하겠다!!
-''' 
+```
 torch.onnx.export(torch_model,               # 실행될 모델
                   x,                         # 모델 입력값 (튜플 또는 여러 입력값들도 가능)
                   "onnx_version_model.onnx",   # 모델 저장 경로 (파일 또는 파일과 유사한 객체 모두 가능)
@@ -69,7 +70,7 @@ torch.onnx.export(torch_model,               # 실행될 모델
                   input_names = ['input'],   # 모델의 입력값을 가리키는 이름
                   output_names = ['output'], # 모델의 출력값을 가리키는 이름
                   dynamic_axes={'input' : {0 : 'batch_size'},    # 가변적인 길이를 가진 차원
-                                'output' : {0 : 'batch_size'}})'''
+                                'output' : {0 : 'batch_size'}})```
 중요한 것 중하나는 daynamic_axes 부분인데, 이 부분에서 우리는 batch_size가 가변적으로 변해도 괜찮다는 것을 알려줘야한다. 
 그리고 모델 저장 경로는 자신이 원하는 대로 바꿔주면 된다~
 
