@@ -1,4 +1,8 @@
-android studio에서 pytorch로 학습시킨 model을 바로 사용하는 것은 불가능하다. 
+android studio에서 pytorch로 학습시킨 model을 바로 사용하는 것은 불가능하다.
+애초에 여기서 선택지가 있는데, pytorch mobile version 사용하기 와 onnx를 거쳐 tensorflow로 변환하기 이렇게 두 가지가 있다. 
+
+그 중에서도 이번에는 onnx를 거쳐 tensorflow로 변환하는 과정에 대해 시도해 볼 것이다. 
+
 그래서 우리는 몇가지 step을 거쳐야한다. 
 
 pytorch model --> onnx --> tensorflow 로 바꿀 것이다.
@@ -81,3 +85,6 @@ torch.onnx.export(torch_model,               # 실행될 모델
 이제 저장한 ONNX 파일을 Tensorflow 형태로 바꾸면, android studio에서 불러 낼 수 있게 된다. 
 본 단계는 [onnx-tensorflow](https://github.com/onnx/onnx-tensorflow)를 참고하였다. 
 
+우선 oonx-tf를 사용할 것이기 때문에! 
+
+이 단계에서도 엄청 여러가지 단계가 있는데 난 코드 짜기가 귀찮아서,,ㅎ commandline으로 해결하겠다!
