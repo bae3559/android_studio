@@ -70,7 +70,9 @@ torch.onnx.export(torch_model,               # 실행될 모델
                   input_names = ['input'],   # 모델의 입력값을 가리키는 이름
                   output_names = ['output'], # 모델의 출력값을 가리키는 이름
                   dynamic_axes={'input' : {0 : 'batch_size'},    # 가변적인 길이를 가진 차원
-                                'output' : {0 : 'batch_size'}})```
+                                'output' : {0 : 'batch_size'}})
+```
+                                
 중요한 것 중하나는 daynamic_axes 부분인데, 이 부분에서 우리는 batch_size가 가변적으로 변해도 괜찮다는 것을 알려줘야한다. 
 그리고 모델 저장 경로는 자신이 원하는 대로 바꿔주면 된다~
 
