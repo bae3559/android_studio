@@ -80,7 +80,7 @@ torch.onnx.export(torch_model,               # 실행될 모델
 중요한 것 중하나는 daynamic_axes 부분인데, 이 부분에서 우리는 batch_size가 가변적으로 변해도 괜찮다는 것을 알려줘야한다. 
 그리고 모델 저장 경로는 자신이 원하는 대로 바꿔주면 된다~
 
-## 2. ONNX --> Tensorflow
+## 2. ONNX --> Tensorflow ( in commandline )
 
 이제 저장한 ONNX 파일을 Tensorflow 형태로 바꾸면, android studio에서 불러 낼 수 있게 된다. 
 본 단계는 [onnx-tensorflow](https://github.com/onnx/onnx-tensorflow)를 참고하였다. 
@@ -88,3 +88,64 @@ torch.onnx.export(torch_model,               # 실행될 모델
 우선 oonx-tf를 사용할 것이기 때문에! 
 
 이 단계에서도 엄청 여러가지 단계가 있는데 난 코드 짜기가 귀찮아서,,ㅎ commandline으로 해결하겠다!
+
+### 1) install onnx-tf 
+
+```
+pip install onnx-tf
+```
+install 잘 되었는지 확인 할 겸 command 창에서 
+
+```
+onnx-tf convert -h
+```
+를 쳐보자. 
+
+잘 설치가 되었다면 
+
+```
+usage: onnx-tf [-h] --infile INFILE --outdir OUTDIR [--extdatadir EXTDATADIR]
+               [--device DEVICE] [--strict STRICT]
+               [--logging_level LOGGING_LEVEL] [--auto_cast AUTO_CAST]
+
+This is the converter for converting protocol buffer between tf and onnx.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --infile INFILE, -i INFILE
+                        Input file path.
+  --outdir OUTDIR, -o OUTDIR
+                        Output directory.
+  --extdatadir EXTDATADIR, -e EXTDATADIR
+                        External input data file directory.
+
+backend arguments (onnx -> tf):
+  --device DEVICE       The device to execute this model on. It can be either
+                        CPU (default) or CUDA. (from onnx_tf.backend.prepare)
+  --strict STRICT       Whether to enforce semantic equivalence between the
+                        original model and the converted tensorflow model,
+                        defaults to True (yes, enforce semantic equivalence).
+                        Changing to False is strongly discouraged. Currently,
+                        the strict flag only affects the behavior of MaxPool
+                        and AveragePool ops. (from onnx_tf.backend.prepare)
+  --logging_level LOGGING_LEVEL
+                        The logging level, default is INFO. Change it to DEBUG
+                        to see more conversion details or to WARNING to see
+                        less (from onnx_tf.backend.prepare)
+  --auto_cast AUTO_CAST
+                        Whether to auto cast data types that might lose
+                        precision for the tensors with types not natively
+                        supported by Tensorflow, default is False (from
+                        onnx_tf.backend.prepare)
+                        
+```
+ 라는 내용이 안내 될 것이다. 
+
+### 2) convert 
+
+```
+onnx-tf convert -i /path/to/input.onnx -o /path/to/output
+```
+/path/to/input.onnx 자리에 input으로 넣어줄 onnx 파일을
+
+/path/to/output 이부분에는 output을 저장할 위치를 적어주면 된다. 
